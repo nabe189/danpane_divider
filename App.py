@@ -126,9 +126,11 @@ def main():
         # アップロードされた画像を読み込む
         # image = Image.open(uploaded_image)
         # BytesIOオブジェクトに読み込む
-        image_bytes = uploaded_image.getvalue()
+        # image_bytes = uploaded_image.read()
+        # image_bytes = uploaded_image.getvalue()
         # BytesIOオブジェクトを使ってPILのImageを作成
-        image = Image.open(image_bytes)
+        # image = Image.open(io.BytesIO(image_bytes))
+        image = uploaded_image.read()
         processed_image = preprocess_image(image, ncols, nrows) #画像の前処理
         outputs = divide_image(processed_image, ncols, nrows, preview=True)
         
