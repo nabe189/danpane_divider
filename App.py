@@ -117,7 +117,7 @@ def main():
     st.title("ダンパネ分割")
 
     # 画像をアップロード
-    uploaded_image = st.file_uploader("Upload Image")#, type=["jpg", "jpeg", "png"])
+    uploaded_image = st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"])
 
     # パラメータを入力
     ncols = st.number_input("Number of Columns", value=5, min_value=1)
@@ -135,7 +135,7 @@ def main():
         # stringio = io.StringIO(bytes_data.decode("utf-8"))
         # stringio = io.BytesIO(bytes_data).read()
         # To read file as bytes:
-        image = Image.open(io.BytesIO(uploaded_image.read()))
+        image = Image.open(io.BytesIO(uploaded_image.getvalue()))
         processed_image = preprocess_image(image, ncols, nrows) #画像の前処理
         outputs = divide_image(processed_image, ncols, nrows, preview=True)
         
