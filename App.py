@@ -115,7 +115,7 @@ def main():
     st.title("ダンパネ分割")
 
     # 画像をアップロード
-    uploaded_image = st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"], key='uploaded_image')
+    st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"], key='uploaded_image')
 
     # パラメータを入力
     ncols = st.number_input("Number of Columns", value=5, min_value=1)
