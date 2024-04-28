@@ -135,18 +135,7 @@ def main():
         # stringio = io.StringIO(bytes_data.decode("utf-8"))
         # stringio = io.BytesIO(bytes_data).read()
         # To read file as bytes:
-        bytes_data = uploaded_image.getvalue()
-        st.write(bytes_data)
-
-        # To convert to a string based IO:
-        stringio = io.StringIO(uploaded_image.getvalue())
-        st.write(stringio)
-
-        # To read file as string:
-        string_data = stringio.read()
-        st.write(string_data)
-        
-        image = Image.open(uploaded_image)
+        image = Image.open(io.BytesIO(uploaded_image.read()))
         processed_image = preprocess_image(image, ncols, nrows) #画像の前処理
         outputs = divide_image(processed_image, ncols, nrows, preview=True)
         
