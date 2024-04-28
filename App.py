@@ -130,7 +130,7 @@ def main():
         #image_bytes = io.BytesIO(uploaded_image.getvalue()).decode("utf-8").read()
         # BytesIOオブジェクトを使ってPILのImageを作成
         bytes_data = uploaded_image.getvalue()
-        stringio = io.StringIO(uploaded_image.getvalue().decode("utf-8"))
+        stringio = io.StringIO(bytes_data)
         image = Image.open(stringio)
         processed_image = preprocess_image(image, ncols, nrows) #画像の前処理
         outputs = divide_image(processed_image, ncols, nrows, preview=True)
