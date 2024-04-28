@@ -139,7 +139,7 @@ def main():
         st.write(bytes_data)
 
         # To convert to a string based IO:
-        stringio = io.StringIO(uploaded_image.getvalue().decode("utf-8"))
+        stringio = io.StringIO(uploaded_image.getvalue())
         st.write(stringio)
 
         # To read file as string:
