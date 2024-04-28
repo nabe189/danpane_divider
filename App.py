@@ -134,14 +134,19 @@ def main():
         # bytes_data = uploaded_image.getvalue()
         # stringio = io.StringIO(bytes_data.decode("utf-8"))
         # stringio = io.BytesIO(bytes_data).read()
-        # image = Image.open(uploaded_image)
-        img_path = os.path.join('imgs', uploaded_image.name)
-        # 画像を保存する
-        with open(img_path, 'wb') as f:
-            f.write(uploaded_image.read())
-            
-        # 保存した画像を表示
-        image = Image.open(img_path)
+        # To read file as bytes:
+        bytes_data = uploaded_image.getvalue()
+        st.write(bytes_data)
+
+        # To convert to a string based IO:
+        stringio = io.StringIO(uploaded_image.getvalue().decode("utf-8"))
+        st.write(stringio)
+
+        # To read file as string:
+        string_data = stringio.read()
+        st.write(string_data)
+        
+        image = Image.open(uploaded_image)
         processed_image = preprocess_image(image, ncols, nrows) #画像の前処理
         outputs = divide_image(processed_image, ncols, nrows, preview=True)
         
