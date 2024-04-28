@@ -115,23 +115,21 @@ def main():
     st.title("ダンパネ分割")
 
     # 画像をアップロード
-    st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"], key='uploaded_image')
+    uploaded_image = st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"])
 
     # パラメータを入力
     ncols = st.number_input("Number of Columns", value=5, min_value=1)
     nrows = st.number_input("Number of Rows", value=2, min_value=1)
 
 
-    #if uploaded_image is not None:
-    if st.session_state['uploaded_image'] is not None:
+    if uploaded_image is not None:
         # アップロードされた画像を読み込む
-        # image = Image.open(uploaded_image)
+        image = Image.open(uploaded_image)
         # BytesIOオブジェクトに読み込む
         # image_bytes = uploaded_image.read()
         # image_bytes = uploaded_image.getvalue()
         # BytesIOオブジェクトを使ってPILのImageを作成
         # image = Image.open(io.BytesIO(image_bytes))
-        image = Image.open(st.session_state['uploaded_image'].getvalue())
         processed_image = preprocess_image(image, ncols, nrows) #画像の前処理
         outputs = divide_image(processed_image, ncols, nrows, preview=True)
         
