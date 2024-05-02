@@ -60,7 +60,7 @@ def preprocess_image(image:Image, ncols:int, nrows:int) -> Image:
     nrows:縦何枚分か
     '''
     canvas_aspect_ratio = A4_ASPECT_RATIO * (ncols / nrows) # 出力画像の縦横比率
-    canvas_height = 150 #この値は適当
+    canvas_height = 500 #この値は適当
     canvas_width = round(canvas_height * canvas_aspect_ratio)
 
     canvas = Image.new(image.mode, (canvas_width, canvas_height), "white") # 出力画像の比率のキャンバスを生成
@@ -135,8 +135,8 @@ def main():
         # stringio = io.StringIO(bytes_data.decode("utf-8"))
         # stringio = io.BytesIO(bytes_data).read()
         # To read file as bytes:
-        st.write(uploaded_image.read())
-        image = Image.open(io.StringIO(uploaded_image.read()))
+        #st.write(uploaded_image.read())
+        image = Image.open(uploaded_image)
         processed_image = preprocess_image(image, ncols, nrows) #画像の前処理
         outputs = divide_image(processed_image, ncols, nrows, preview=True)
         
