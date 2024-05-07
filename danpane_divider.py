@@ -126,18 +126,8 @@ def main():
 
     if uploaded_image is not None:
         # アップロードされた画像を読み込む
-        # image = Image.open(uploaded_image)
-        # BytesIOオブジェクトに読み込む
-        # image_bytes = uploaded_image.read()
-        #vimage_bytes = io.BytesIO(uploaded_image.getvalue()).decode("utf-8").read()
-        # BytesIOオブジェクトを使ってPILのImageを作成
-        # bytes_data = uploaded_image.getvalue()
-        # stringio = io.StringIO(bytes_data.decode("utf-8"))
-        # stringio = io.BytesIO(bytes_data).read()
-        # To read file as bytes:
-        #st.write(uploaded_image.read())
         image = Image.open(uploaded_image)
-        processed_image = preprocess_image(image, ncols, nrows) #画像の前処理
+        processed_image = preprocess_image(image, ncols, nrows)
         outputs = divide_image(processed_image, ncols, nrows, preview=True)
         
         # 前処理後の画像をダウンロード
