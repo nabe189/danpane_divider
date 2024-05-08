@@ -66,7 +66,7 @@ def preprocess_image(image:Image, ncols:int, nrows:int) -> Image:
     return canvas
 
 # 画像の分割
-def divide_image(image:Image, ncols:int, nrows:int, preview=False) -> list:
+def divide_image(image:Image, ncols:int, nrows:int) -> list:
     '''
     image:分割するImage
     ncols:横何枚分か
@@ -81,8 +81,7 @@ def divide_image(image:Image, ncols:int, nrows:int, preview=False) -> list:
     output_height = image.height // nrows
 
     # プレビューの作成
-    if preview:
-        fig, axes = plt.subplots(nrows, ncols, figsize=(14, 14/(ncols/nrows)/A4_ASPECT_RATIO))
+    fig, axes = plt.subplots(nrows, ncols, figsize=(14, 14/(ncols/nrows)/A4_ASPECT_RATIO))
 
     # 画像をA4用紙の枚数で分割する
     for i in range(nrows):
@@ -97,16 +96,14 @@ def divide_image(image:Image, ncols:int, nrows:int, preview=False) -> list:
             cropped_image = image.crop((left, top, right, bottom))
             outputs.append(cropped_image)
 
-            if preview:
-                # 画像を表示
-                ax = axes[i][j] if nrows > 1 else axes[j]
-                ax.imshow(cropped_image)
-                ax.tick_params(labelbottom=False, labelleft=False, labelright=False, labeltop=False, 
-                                bottom=False, left=False, right=False, top=False) #目盛りを消す
+            # 画像を表示
+            ax = axes[i][j] if nrows > 1 else axes[j]
+            ax.imshow(cropped_image)
+            ax.tick_params(labelbottom=False, labelleft=False, labelright=False, labeltop=False, 
+                            bottom=False, left=False, right=False, top=False) #目盛りを消す
     
-    if preview:
-        plt.subplots_adjust(wspace=0.01, hspace=0.01) #間隔の調整
-        st.pyplot(fig) # プレビューの表示
+    plt.subplots_adjust(wspace=0.01, hspace=0.01) #間隔の調整
+    st.pyplot(fig) # プレビューの表示
 
     return outputs
 
@@ -125,9 +122,9 @@ def main():
         # アップロードされた画像を読み込む
         image = Image.open(uploaded_image)
         processed_image = preprocess_image(image, ncols, nrows)
-        outputs = divide_image(processed_image, ncols, nrows, preview=True)
+        outputs = divide_image(processed_image, ncols, nrows)
         
-        # 前処理後の画像をダウンロード
+        # 前処理後の複数画像を圧縮してダウンロード
         # if st.button("Download Processed Images"):
         #     # zipファイルを作成
         #     zip_bytes = io.BytesIO()
@@ -148,7 +145,7 @@ def main():
         if st.button("Generate PDF"):
             img_byte_array = io.BytesIO()
             # PDFを作成
-            outputs[0].save(img_byte_array, format="PDF" ,resolution=100.0, save_all=True, append_images=outputs[1:])
+            outputs[0].save(img_byte_array, format="PDF", resolution=100.0, save_all=True, append_images=outputs[1:])
             img_bytes = img_byte_array.getvalue()
             st.download_button(label="Download PDF", data=img_bytes, file_name="processed_images.pdf", mime="application/pdf")
 
