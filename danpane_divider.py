@@ -97,7 +97,7 @@ def divide_image(image:Image, ncols:int, nrows:int) -> list:
             outputs.append(cropped_image)
 
             # 画像を表示
-            ax = axes[i][j] if nrows > 1 else axes[j]
+            ax = axes[j] if nrows == 1 else axes[i] if ncols == 1 else axes[i][j]
             ax.imshow(cropped_image)
             ax.tick_params(labelbottom=False, labelleft=False, labelright=False, labeltop=False, 
                             bottom=False, left=False, right=False, top=False) #目盛りを消す
