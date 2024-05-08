@@ -151,9 +151,9 @@ def main():
                 c.drawImage(output, 0, 0)
                 c.showPage()
             c.save()
-            with open("output.pdf", "wb") as f:
-                f.write(buffer.getvalue())
-            st.download_button(label="Download PDF", data=open("output.pdf", "rb").read(), file_name="output.pdf", mime="application/pdf")
+            # with open("output.pdf", "wb") as f:
+            #     f.write(buffer.getvalue())
+            st.download_button(label="Download PDF", data=buffer.getvalue(), file_name="output.pdf", mime="application/pdf")
 
 if __name__ == "__main__":
     main()
