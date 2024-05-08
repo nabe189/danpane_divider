@@ -145,18 +145,11 @@ def main():
             st.download_button(label="Download Zip", data=zip_bytes, file_name="processed_images.zip", mime="application/zip")
 
         if st.button("Generate PDF"):
-            buffer = io.BytesIO()
-            c = canvas.Canvas(buffer, pagesize=A4)
-            for output in outputs:
-                c.drawImage(output, 0, 0)
-                c.showPage()
-            c.save()
-            # with open("output.pdf", "wb") as f:
-            #     f.write(buffer.getvalue())
-            # with zipfile.ZipFile(buffer, "w") as zipf:
-            #     zipf.writestr(f"processed_images.pdf", buffer)
-            # buffer.seek(0)
-            # st.download_button(label="Download PDF", data=buffer, file_name="output.pdf", mime="application/pdf")
+            img_byte_array = io.BytesIO()
+            outputs[0].save(img_byte_array, format="PDF" ,resolution=100.0, save_all=True, append_images=outputs[1:])
+            img_bytes = img_byte_array.getvalue()
+            img_bytes.seek(0)
+            st.download_button(label="Download PDF", data=img_bytes, file_name="output.pdf", mime="application/pdf")
 
 if __name__ == "__main__":
     main()
