@@ -100,7 +100,7 @@ def divide_image(image:Image, ncols:int, nrows:int, preview=False) -> list:
             cropped_image = image.crop((left, top, right, bottom))
 
             # 画像サイズをA4サイズにする
-            cropped_image.resize((A4_WIDTH_MM, A4_HEIGHT_MM))
+            cropped_image = cropped_image.resize((A4_WIDTH_MM, A4_HEIGHT_MM))
 
             outputs.append(cropped_image)
 
