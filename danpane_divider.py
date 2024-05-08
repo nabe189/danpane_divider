@@ -2,7 +2,8 @@ import streamlit as st
 from PIL import Image
 import matplotlib.pyplot as plt
 import io
-import os
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 import zipfile
 
 
@@ -117,6 +118,14 @@ def divide_image(image:Image, ncols:int, nrows:int, preview=False) -> list:
 
     return outputs
 
+# pdf出力
+def images_to_pdf(images, output_path):
+    c = canvas.Canvas(output_path, pagesize=letter)
+    for image in images:
+        c.drawImage(image, 0, 0, width=letter[0], height=letter[1])
+        c.showPage()
+    c.save()
+
 def main():
     st.title("ダンパネ分割")
 
@@ -135,21 +144,27 @@ def main():
         outputs = divide_image(processed_image, ncols, nrows, preview=True)
         
         # 前処理後の画像をダウンロード
-        if st.button("Download Processed Images"):
-            # zipファイルを作成
-            zip_bytes = io.BytesIO()
-            with zipfile.ZipFile(zip_bytes, "w") as zipf:
-                for i, output in enumerate(outputs):
-                    # 画像をバイト列に変換
-                    img_byte_array = io.BytesIO()
-                    output.save(img_byte_array, format="PNG")
-                    img_bytes = img_byte_array.getvalue()
-                    # zipファイルに画像を追加
-                    zipf.writestr(f"processed_image_{str(i+1).zfill(2)}.png", img_bytes)
+        # if st.button("Download Processed Images"):
+        #     # zipファイルを作成
+        #     zip_bytes = io.BytesIO()
+        #     with zipfile.ZipFile(zip_bytes, "w") as zipf:
+        #         for i, output in enumerate(outputs):
+        #             # 画像をバイト列に変換
+        #             img_byte_array = io.BytesIO()
+        #             output.save(img_byte_array, format="PNG")
+        #             img_bytes = img_byte_array.getvalue()
+        #             # zipファイルに画像を追加
+        #             zipf.writestr(f"processed_image_{str(i+1).zfill(2)}.png", img_bytes)
             
-            # zipファイルをダウンロード
-            zip_bytes.seek(0)
-            st.download_button(label="Download Zip", data=zip_bytes, file_name="processed_images.zip", mime="application/zip")
+        #     # zipファイルをダウンロード
+        #     zip_bytes.seek(0)
+        #     st.download_button(label="Download Zip", data=zip_bytes, file_name="processed_images.zip", mime="application/zip")
+        
+        # PDFファイルにまとめて出力
+        if st.button("Generate PDF"):
+            output_path = "output.pdf"
+            images_to_pdf(outputs, output_path)
+            st.success(f"PDF file generated successfully! You can download it [here](./{output_path}).")
 
 if __name__ == "__main__":
     main()
