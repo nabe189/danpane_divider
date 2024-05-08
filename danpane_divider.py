@@ -3,7 +3,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import io
 import zipfile
-import reportlab.lib.pagesizes as pagesizes
+from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 
 # A4サイズの比率
@@ -128,21 +128,32 @@ def main():
         outputs = divide_image(processed_image, ncols, nrows, preview=True)
         
         # 前処理後の画像をダウンロード
-        if st.button("Download Processed Images"):
-            # zipファイルを作成
-            zip_bytes = io.BytesIO()
-            with zipfile.ZipFile(zip_bytes, "w") as zipf:
-                for i, output in enumerate(outputs):
-                    # 画像をバイト列に変換
-                    img_byte_array = io.BytesIO()
-                    output.save(img_byte_array, format="PNG")
-                    img_bytes = img_byte_array.getvalue()
-                    # zipファイルに画像を追加
-                    zipf.writestr(f"processed_image_{str(i+1).zfill(2)}.png", img_bytes)
+        # if st.button("Download Processed Images"):
+        #     # zipファイルを作成
+        #     zip_bytes = io.BytesIO()
+        #     with zipfile.ZipFile(zip_bytes, "w") as zipf:
+        #         for i, output in enumerate(outputs):
+        #             # 画像をバイト列に変換
+        #             img_byte_array = io.BytesIO()
+        #             output.save(img_byte_array, format="PNG")
+        #             img_bytes = img_byte_array.getvalue()
+        #             # zipファイルに画像を追加
+        #             zipf.writestr(f"processed_image_{str(i+1).zfill(2)}.png", img_bytes)
             
-            # zipファイルをダウンロード
-            zip_bytes.seek(0)
-            st.download_button(label="Download Zip", data=zip_bytes, file_name="processed_images.zip", mime="application/zip")
+        #     # zipファイルをダウンロード
+        #     zip_bytes.seek(0)
+        #     st.download_button(label="Download Zip", data=zip_bytes, file_name="processed_images.zip", mime="application/zip")
+
+        if st.button("Generate PDF"):
+            buffer = io.BytesIO()
+            c = canvas.Canvas(buffer, pagesize=A4)
+            for output in outputs:
+                c.drawImage(output, 0, 0)
+                c.showPage()
+            c.save()
+            with open("output.pdf", "wb") as f:
+                f.write(buffer.getvalue())
+            st.download_button(label="Download PDF", data=open("output.pdf", "rb").read(), file_name="output.pdf", mime="application/pdf")
 
 if __name__ == "__main__":
     main()
