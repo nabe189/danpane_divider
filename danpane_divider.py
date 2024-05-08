@@ -98,6 +98,10 @@ def divide_image(image:Image, ncols:int, nrows:int, preview=False) -> list:
             
             # 画像を切り取る
             cropped_image = image.crop((left, top, right, bottom))
+
+            # 画像サイズをA4サイズにする
+            cropped_image.resize((A4_WIDTH_MM, A4_HEIGHT_MM))
+
             outputs.append(cropped_image)
 
             if preview:
