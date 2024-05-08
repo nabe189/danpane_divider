@@ -153,7 +153,10 @@ def main():
             c.save()
             # with open("output.pdf", "wb") as f:
             #     f.write(buffer.getvalue())
-            st.download_button(label="Download PDF", data=buffer.getvalue(), file_name="output.pdf", mime="application/pdf")
+            with zipfile.ZipFile(buffer, "w") as zipf:
+                zipf.writestr(f"processed_images.pdf", buffer)
+            buffer.seek(0)
+            st.download_button(label="Download PDF", data=buffer, file_name="output.pdf", mime="application/pdf")
 
 if __name__ == "__main__":
     main()
