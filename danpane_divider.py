@@ -128,31 +128,21 @@ def main():
         outputs = divide_image(processed_image, ncols, nrows, preview=True)
         
         # 前処理後の画像をダウンロード
-        # if st.button("Download Processed Images"):
-            # # zipファイルを作成
-            # zip_bytes = io.BytesIO()
-            # with zipfile.ZipFile(zip_bytes, "w") as zipf:
-            #     for i, output in enumerate(outputs):
-            #         # 画像をバイト列に変換
-            #         img_byte_array = io.BytesIO()
-            #         output.save(img_byte_array, format="PNG")
-            #         img_bytes = img_byte_array.getvalue()
-            #         # zipファイルに画像を追加
-            #         zipf.writestr(f"processed_image_{str(i+1).zfill(2)}.png", img_bytes)
+        if st.button("Download Processed Images"):
+            # zipファイルを作成
+            zip_bytes = io.BytesIO()
+            with zipfile.ZipFile(zip_bytes, "w") as zipf:
+                for i, output in enumerate(outputs):
+                    # 画像をバイト列に変換
+                    img_byte_array = io.BytesIO()
+                    output.save(img_byte_array, format="PNG")
+                    img_bytes = img_byte_array.getvalue()
+                    # zipファイルに画像を追加
+                    zipf.writestr(f"processed_image_{str(i+1).zfill(2)}.png", img_bytes)
             
-            # # zipファイルをダウンロード
-            # zip_bytes.seek(0)
-            # st.download_button(label="Download Zip", data=zip_bytes, file_name="processed_images.zip", mime="application/zip")
-        
-        # PDFファイルにまとめて出力
-        if st.button("Generate PDF"):
-            pdf_bytes = io.BytesIO()
-            c = canvas.Canvas(pdf_bytes, pagesize=pagesizes.A4)
-            for output in outputs:
-                c.drawImage(output, 0, 0, width=pagesizes.A4[0], height=pagesizes.A4[1])
-                c.showPage()
-            c.save()
-            st.download_button(label="Download Zip", data=pdf_bytes, file_name="processed_images.pdf", mime="application/zip")
+            # zipファイルをダウンロード
+            zip_bytes.seek(0)
+            st.download_button(label="Download Zip", data=zip_bytes, file_name="processed_images.zip", mime="application/zip")
 
 if __name__ == "__main__":
     main()
