@@ -124,7 +124,7 @@ def main():
         # アップロードされた画像を読み込む
         image = Image.open(uploaded_image)
         if direction == "horizontal":
-            image = image.rotate(90)
+            image = image.rotate(90, expand=True)
         processed_image = preprocess_image(image, ncols, nrows)
         outputs = divide_image(processed_image, ncols, nrows)
         
