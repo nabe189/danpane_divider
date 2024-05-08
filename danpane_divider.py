@@ -117,10 +117,14 @@ def main():
     ncols = st.number_input("Number of Columns", value=5, min_value=1)
     nrows = st.number_input("Number of Rows", value=2, min_value=1)
 
+    # 向きを入力
+    direction = st.radio("Direction", ("vertical", "horizontal"), horizontal=True)
 
     if uploaded_image is not None:
         # アップロードされた画像を読み込む
         image = Image.open(uploaded_image)
+        if direction == "horizontal":
+            image = image.rotate(90)
         processed_image = preprocess_image(image, ncols, nrows)
         outputs = divide_image(processed_image, ncols, nrows)
         
