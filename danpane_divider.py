@@ -148,7 +148,7 @@ def main():
             img_byte_array = io.BytesIO()
             outputs[0].save(img_byte_array, format="PDF" ,resolution=100.0, save_all=True, append_images=outputs[1:])
             img_bytes = img_byte_array.getvalue()
-            img_bytes.seek(0)
+            # img_bytes.seek(0)
             st.download_button(label="Download PDF", data=img_bytes, file_name="output.pdf", mime="application/pdf")
 
 if __name__ == "__main__":
