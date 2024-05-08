@@ -56,10 +56,12 @@ def preprocess_image(image:Image, ncols:int, nrows:int) -> Image:
     ncols:横何枚分か
     nrows:縦何枚分か
     '''
-    canvas_aspect_ratio = A4_ASPECT_RATIO * (ncols / nrows) # 出力画像の縦横比率
-    canvas_height = 500 #この値は適当
-    canvas_width = round(canvas_height * canvas_aspect_ratio)
+    # canvas_aspect_ratio = A4_ASPECT_RATIO * (ncols / nrows) # 出力画像の縦横比率
+    # canvas_height = 500 #この値は適当
+    # canvas_width = round(canvas_height * canvas_aspect_ratio)
 
+    canvas_width = 217 * ncols
+    canvas_height = 297 * nrows
     canvas = Image.new(image.mode, (canvas_width, canvas_height), "white") # 出力画像の比率のキャンバスを生成
     canvas = paste_center(adjust_image_size(image, canvas_height, canvas_width), canvas) # サイズ調整した元画像をキャンバスに貼り付け
     
