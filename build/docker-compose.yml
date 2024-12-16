@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: ./build/Dockerfile
+    container_name: ${SERVICE_NAME}-app
+    ports:
+      - "${STREAMLIT_PORT}:${STREAMLIT_PORT}"
+    environment:
+      - SERVICE_NAME=${SERVICE_NAME}
+      - STREAMLIT_PORT=${STREAMLIT_PORT}
