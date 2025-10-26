@@ -3,8 +3,6 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import io
 import zipfile
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
 
 # A4サイズの比率
 A4_WIDTH_MM = 210
